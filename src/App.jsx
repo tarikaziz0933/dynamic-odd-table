@@ -43,17 +43,6 @@ export default function App() {
     setSuggestions(filtered);
   }, [searchTerm, data]);
 
-  // Handle user click on suggestion
-  // const onSelectMatch = (match) => {
-  //   setSelectedMatch(match);
-  //   setSearchTerm(match.id || "");
-  //   setSuggestions([]);
-  // };
-  // const onSelectMatch = (match) => {
-  //   setSelectedMatch(match);
-  //   setSearchTerm(match.matches?.match?.id || match.gid || "");
-  //   setSuggestions([]);
-  // };
   const onSelectMatch = (item) => {
     setSelectedMatch(item);
     setSearchTerm(item.matches?.match?.id || item.gid || "");
