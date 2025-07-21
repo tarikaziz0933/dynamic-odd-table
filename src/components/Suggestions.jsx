@@ -1,16 +1,24 @@
-export default function Suggestions({ list, onSelect }) {
-    if (!list.length) return null;
+import React from "react";
+
+export default function Suggestions({ suggestions, onSelectMatch }) {
     return (
-        <ul className="absolute z-10 w-full bg-[#1f2a63] border border-gray-700 rounded mt-1 max-h-48 overflow-auto">
-            {list.map((item) => (
-                <li
-                    key={item.id}
-                    className="p-2 hover:bg-[#293575] cursor-pointer"
-                    onClick={() => onSelect(item)}
-                >
-                    {item.name} (ID: {item.id})
-                </li>
-            ))}
+        <ul className="bg-white text-black rounded shadow-md absolute w-full z-10">
+            {suggestions.map((item, index) => {
+                const match = item.matches?.match || {};
+                const matchId = match?.id || "";
+                const away = match?.awayteam?.name || "";
+                const home = match?.localteam?.name || "";
+
+                return (
+                    <li
+                        key={`${matchId}-${index}`} // ✅ unique key
+                        className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+                        onClick={() => onSelectMatch(item)}
+                    >
+                        {matchId} - {home} vs {away}
+                    </li>
+                );
+            })}
         </ul>
     );
 }

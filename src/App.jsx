@@ -1,22 +1,80 @@
+import React, { useState, useEffect } from "react";
+import SearchBar from "./components/SearchBar";
+import Suggestions from "./components/Suggestions";
+import MatchDetails from "./components/MatchDetails";
+import OddsTable from "./components/OddsTable";
 
-import { useEffect, useState } from 'react';
-import './App.css'
+export default function App() {
+  const [data, setData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [selectedMatch, setSelectedMatch] = useState(null);
 
-function App() {
-  const [matches, setMatches] = useState([]);
-
+  // Load data.json
   useEffect(() => {
-    fetch('/data.json')
-      .then(res => res.json())
-      .then(data => setMatches(data));
+    fetch("/data.json")
+      .then((res) => res.json())
+      .then((json) => {
+        if (Array.isArray(json.data)) {
+          setData(json.data);
+        } else {
+          console.error("data.json format problem: json.data is not an array.");
+        }
+      })
+      .catch((err) => console.error("Failed to load data.json:", err));
   }, []);
-  console.log(matches);
+
+  // Filter suggestions
+  useEffect(() => {
+    if (!searchTerm) {
+      setSuggestions([]);
+      return;
+    }
+
+    const filtered = data.filter((item) => {
+      const matchId = item.matches?.match?.id || "";
+      const gid = item.gid || "";
+      const name = item.name?.toLowerCase() || "";
+      const term = searchTerm.toLowerCase();
+
+      return matchId.includes(term) || gid.includes(term) || name.includes(term);
+    });
+
+    setSuggestions(filtered);
+  }, [searchTerm, data]);
+
+  // Handle user click on suggestion
+  // const onSelectMatch = (match) => {
+  //   setSelectedMatch(match);
+  //   setSearchTerm(match.id || "");
+  //   setSuggestions([]);
+  // };
+  // const onSelectMatch = (match) => {
+  //   setSelectedMatch(match);
+  //   setSearchTerm(match.matches?.match?.id || match.gid || "");
+  //   setSuggestions([]);
+  // };
+  const onSelectMatch = (item) => {
+    setSelectedMatch(item);
+    setSearchTerm(item.matches?.match?.id || item.gid || "");
+    setSuggestions([]);
+  };
 
   return (
-    <>
+    <div className="min-h-screen bg-[#182142] text-white p-4 font-sans">
+      <div className="max-w-xl mx-auto mb-6 ">
+        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        {suggestions.length > 0 && (
+          <Suggestions suggestions={suggestions} onSelectMatch={onSelectMatch} />
+        )}
+      </div>
 
-    </>
-  )
+      {selectedMatch && (
+        <div className="max-w-5xl mx-auto bg-[#1f2a63] rounded p-6">
+          <MatchDetails match={selectedMatch} />
+          <OddsTable match={selectedMatch} />
+        </div>
+      )}
+    </div>
+  );
 }
-
-export default App

@@ -1,11 +1,13 @@
-export default function SearchBar({ value, onChange }) {
+
+// import React from 'react';
+export default function SearchBar({ searchTerm, setSearchTerm }) {
     return (
         <input
             type="text"
             className="w-full p-3 rounded bg-[#1f2a63] placeholder-gray-400"
             placeholder="Search by Match ID or Name..."
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
         />
     );
 }

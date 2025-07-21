@@ -1,18 +1,23 @@
+// import React from "react";
+
 export default function MatchDetails({ match }) {
+    // Null check
+    if (!match || !match.matches || !match.matches.match) {
+        return <div>Match information not available.</div>;
+    }
+
+    const matchData = match.matches.match;
+    const home = matchData.localteam?.name || "N/A";
+    const away = matchData.awayteam?.name || "N/A";
+    const matchId = matchData.id;
+
     return (
-        <div className="flex justify-between items-center mb-6">
-            <div className="text-center flex-1">
-                <div className="text-3xl font-semibold">{match.localteam.name}</div>
-                <div className="text-yellow-400">({match.localteam.id})</div>
-            </div>
-            <div className="text-center flex-1">
-                <div className="text-xl">{match.time}</div>
-                <div className="text-4xl font-bold">{match.date}</div>
-            </div>
-            <div className="text-center flex-1">
-                <div className="text-3xl font-semibold">{match.awayteam.name}</div>
-                <div className="text-yellow-400">({match.awayteam.id})</div>
-            </div>
+        <div className="mb-4">
+            <h2 className="text-2xl font-bold mb-2">
+                {home} vs {away}
+            </h2>
+            <p className="text-sm text-gray-300">Match ID: {matchId}</p>
         </div>
     );
 }
+
