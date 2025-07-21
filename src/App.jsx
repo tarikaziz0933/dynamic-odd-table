@@ -10,6 +10,7 @@ function App() {
       .then(res => res.json())
       .then(data => setMatches(data));
   }, []);
+  console.log(matches);
 
   return (
     <>
