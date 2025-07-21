@@ -3,6 +3,7 @@ import SearchBar from "./components/SearchBar";
 import Suggestions from "./components/Suggestions";
 import MatchDetails from "./components/MatchDetails";
 import OddsTable from "./components/OddsTable";
+import MatchHeader from "./components/MatchHeader";
 
 export default function App() {
   const [data, setData] = useState([]);
@@ -60,6 +61,7 @@ export default function App() {
 
       {selectedMatch && (
         <div className="max-w-5xl mx-auto bg-[#1f2a63] rounded p-6">
+          <MatchHeader match={selectedMatch} />
           <MatchDetails match={selectedMatch} />
           <OddsTable match={selectedMatch} />
         </div>
