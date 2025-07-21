@@ -1,14 +1,19 @@
 
+import { useEffect, useState } from 'react';
 import './App.css'
 
 function App() {
+  const [matches, setMatches] = useState([]);
+
+  useEffect(() => {
+    fetch('/data.json')
+      .then(res => res.json())
+      .then(data => setMatches(data));
+  }, []);
 
   return (
     <>
 
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
