@@ -35,30 +35,6 @@ export default function App() {
       return;
     }
 
-    // const filtered = data.filter((item) => {
-    //   const matchData = item.matches?.match;
-    //   //for array
-    //   if (Array.isArray(matchData)) {
-    //     return matchData.some((match) => {
-    //       const matchId = match?.id || "";
-    //       const name = (match?.localteam?.name + match?.awayteam?.name || "").toLowerCase();
-    //       const term = searchTerm.toLowerCase();
-    //       return matchId.includes(term) || name.includes(term);
-    //     });
-    //   }
-    //   //for object
-    //   //   const matchId = item.matches?.match?.id || "";
-    //   //   const gid = item.gid || "";
-    //   //   const name = item.name?.toLowerCase() || "";
-    //   //   const term = searchTerm.toLowerCase();
-
-    //   //   return matchId.includes(term) || gid.includes(term) || name.includes(term);
-    //   // });
-    //   const matchId = matchData?.id || "";
-    //   const name = (matchData?.localteam?.name + matchData?.awayteam?.name || "").toLowerCase();
-    //   const term = searchTerm.toLowerCase();
-    //   return matchId.includes(term) || name.includes(term);
-    // });
     const filtered = data.filter((item) => {
       const matchData = item.matches?.match;
       const term = searchTerm.toLowerCase();
@@ -82,17 +58,15 @@ export default function App() {
     setSuggestions(filtered);
   }, [searchTerm, data]);
 
-  // const onSelectMatch = (item) => {
-  //   setSelectedMatch(item);
-  //   setSearchTerm(item.matches?.match?.id || item.gid || "");
-  //   setSuggestions([]);
-  // };
   const onSelectMatch = (item) => {
     const matchData = item.matches?.match;
     if (inputRef.current) {
       inputRef.current.blur();
     }
-    setSuggestions([]);
+    setTimeout(() => {
+      if (inputRef.current) inputRef.current.blur();
+      setSuggestions([]);
+    }, 0);
 
     if (Array.isArray(matchData)) {
       setSelectedMatch({ ...item, matches: { match: matchData[0] } }); // or show all matches if needed
